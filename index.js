@@ -5,6 +5,10 @@ const { createProduct } = require("./controller/Product");
 const productsRouter = require("./routes/Products");
 const categoriesRouter = require("./routes/Categories");
 const brandsRouter = require("./routes/Brands");
+const userRouter = require("./routes/Users");
+const authRouter = require("./routes/Auth");
+const cartRouter = require("./routes/Cart");
+const orderRouter = require("./routes/Order");
 const cors = require("cors");
 
 //middleware
@@ -17,6 +21,10 @@ server.use(express.json()); //to parse req.body
 server.use("/products", productsRouter.router);
 server.use("/categories", categoriesRouter.router);
 server.use("/brands", brandsRouter.router);
+server.use("/users", userRouter.router);
+server.use("/auth", authRouter.router);
+server.use("/cart", cartRouter.router);
+server.use("/orders", orderRouter.router);
 
 main();
 

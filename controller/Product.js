@@ -1,4 +1,4 @@
-const { Product } = require("../model/product");
+const { Product } = require("../model/Product");
 
 exports.createProduct = async (req, res) => {
   const newProduct = new Product(req.body);
@@ -11,8 +11,12 @@ exports.createProduct = async (req, res) => {
 };
 
 exports.fetchAllProducts = async (req, res) => {
-  let query = Product.find({});
-  let totalProductsQuery = Product.find({});
+  let condition = {};
+  if (!req.query.admin) {
+    condition.deleted = { $ne: true };
+  }
+  let query = Product.find(condition);
+  let totalProductsQuery = Product.find(condition);
   if (req.query.category) {
     query = query.find({ category: req.query.category });
   }
@@ -55,9 +59,6 @@ exports.updateProduct = async (req, res) => {
     const product = await Product.findByIdAndUpdate(id, req.body, {
       new: true,
     });
-    product.discountPrice = Math.round(
-      product.price * (1 - product.discountPercentage / 100)
-    );
     const updatedProduct = await product.save();
     res.status(200).json(updatedProduct);
   } catch (err) {

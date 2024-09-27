@@ -15,7 +15,7 @@ const path = require("path");
 dotenv.config();
 
 //middleware
-app.use(express.static(path.join(__dirname, "build")));
+server.use(express.static(path.resolve(__dirname, "build")));
 server.use(
   cors({
     exposedHeaders: ["X-Total-Count"],
@@ -29,6 +29,9 @@ server.use("/users", userRouter.router);
 server.use("/auth", authRouter.router);
 server.use("/cart", cartRouter.router);
 server.use("/orders", orderRouter.router);
+server.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "build", "index.html"));
+});
 
 main();
 
@@ -41,15 +44,11 @@ async function main() {
   }
 }
 
-server.get("/*", (req, res) => {
-  res.json("Hello");
-});
+// server.get("/", (req, res) => {
+//   res.json({ status: "success" });
+// });
 
-server.get("/", (req, res) => {
-  res.json({ status: "success" });
-});
-
-server.post("/products", createProduct);
+// server.post("/products", createProduct);
 
 server.listen(process.env.PORT, () => {
   console.log("server started successfully");

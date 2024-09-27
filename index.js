@@ -10,6 +10,8 @@ const authRouter = require("./routes/Auth");
 const cartRouter = require("./routes/Cart");
 const orderRouter = require("./routes/Order");
 const cors = require("cors");
+const dotenv = require("dotenv");
+dotenv.config();
 
 //middleware
 server.use(
@@ -30,7 +32,7 @@ main();
 
 async function main() {
   try {
-    await mongoose.connect("mongodb://localhost:27017/ecommerce");
+    await mongoose.connect(process.env.MONGODB_URL);
     console.log("connected to database");
   } catch (error) {
     console.log(error);
@@ -43,6 +45,6 @@ server.get("/", (req, res) => {
 
 server.post("/products", createProduct);
 
-server.listen(8080, () => {
+server.listen(process.env.PORT, () => {
   console.log("server started successfully");
 });

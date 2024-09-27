@@ -11,9 +11,11 @@ const cartRouter = require("./routes/Cart");
 const orderRouter = require("./routes/Order");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const path = require("path");
 dotenv.config();
 
 //middleware
+app.use(express.static(path.join(__dirname, "build")));
 server.use(
   cors({
     exposedHeaders: ["X-Total-Count"],
@@ -38,6 +40,10 @@ async function main() {
     console.log(error);
   }
 }
+
+server.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
 
 server.get("/", (req, res) => {
   res.json({ status: "success" });

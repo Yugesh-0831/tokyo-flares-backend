@@ -42,7 +42,7 @@ async function main() {
 }
 
 server.get("/*", (req, res) => {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
+  res.json("Hello");
 });
 
 server.get("/", (req, res) => {
